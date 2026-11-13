@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+ <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#3d5afe"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>Playroom – book a station</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0f7;--card:#fff;--ink:#1b1f3b;--mute:#626888;--line:#d6d9ec;--ps5:#3d5afe;--vr:#d62f86;--car:#c77700;--ok:#1a8f5a;--bad:#c62f3e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14162b;--card:#202444;--ink:#eceefb;--mute:#a3a8cb;--line:#363a66;--ps5:#7d90ff;--vr:#ff6db5;--car:#ffb23d;--ok:#4cd698;--bad:#ff7a87}}
+:root[data-theme="dark"]{--bg:#14162b;--card:#202444;--ink:#eceefb;--mute:#a3a8cb;--line:#363a66;--ps5:#7d90ff;--vr:#ff6db5;--car:#ffb23d;--ok:#4cd698;--bad:#ff7a87}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.45 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100%}
+main{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 2px}
+h2{font-size:15px;font-weight:600;margin:22px 0 8px;color:var(--mute)}
+p{margin:0}.mute{color:var(--mute);font-size:14px}
+.nav{display:flex;gap:6px;margin:14px 0 0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.tab{flex:1;padding:10px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-weight:600}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.type{padding:12px 8px;border-radius:14px;border:2px solid var(--line);background:var(--card);text-align:left}
+.type b{display:block;font-size:17px}.type span{font-size:13px;color:var(--mute)}
+.type.on{border-color:var(--acc);box-shadow:inset 0 -5px 0 var(--acc)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-size:15px}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.step{display:flex;align-items:center;gap:14px}
+.step button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);font-size:20px}
+.step b{min-width:24px;text-align:center;font-size:20px}
+input[type=date],input[type=tel],input[type=text],input[type=number],input[type=password]{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.sts{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.st{aspect-ratio:1;border-radius:12px;border:2px solid var(--line);background:var(--card);font-weight:800;font-size:18px}
+.st.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.st:disabled{opacity:.3;cursor:not-allowed}
+.sum{margin-top:22px;background:var(--card);border:2px solid var(--acc);border-radius:18px;padding:16px}
+.price{font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.go{margin-top:12px;width:100%;padding:14px;border-radius:14px;border:0;background:var(--acc);color:#fff;font-weight:800;font-size:17px}
+.go:disabled{opacity:.4;cursor:not-allowed}
+.msg{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--card);border-left:5px solid var(--ok)}
+.msg.err{border-left-color:var(--bad)}
+.bk{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.bk.x{opacity:.5}.bk small{display:block;color:var(--mute)}
+.lnk{border:0;background:none;color:var(--mute);text-decoration:underline;font-size:14px;padding:8px 0}
+.mini{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px;font-size:14px}
+.grid2{display:grid;grid-template-columns:1fr 110px;gap:8px;align-items:center;margin-bottom:8px}
+.stat{display:flex;gap:10px}.stat div{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px}
+.stat b{font-size:24px;display:block}
+@media (max-width:380px){.sts{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:no-preference){.sum{transition:border-color .2s}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const KEY='playroom-v2';
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function seed(){const t=today();return{cfg:{cur:'₹',open:10,close:22,pin:'1234',types:{
+ps5:{name:'PS5',n:6,rate:150,games:[['EA Sports FC',4],['Tekken 8',2],['Mortal Kombat',2],['Call of Duty',4]]},
+vr:{name:'VR',n:2,rate:300,games:[['Beat Saber',1],['Contractors',2],['Gorilla Tag',2]]},
+car:{name:'Car sim',n:2,rate:250,games:[['Assetto Corsa',2],['Gran Turismo 7',2]]}}},
+bk:[{id:1,type:'ps5',st:1,date:t,start:18,hrs:2,game:'Tekken 8',players:2,name:'Sample guest',price:300,status:'ok'},
+{id:2,type:'vr',st:1,date:t,start:19,hrs:1,game:'Beat Saber',players:1,name:'Sample guest',price:300,status:'ok'}]}}
+function load(){const s=seed();s.bk=[];return s}
+function save(){if(db&&isAdm){const c=S.cfg;db.doc('config/main').set({cur:c.cur,open:c.open,close:c.close,types:c.types}).catch(()=>{})}}
+async function book(){
+ const t=T(),id='b'+Date.now()+Math.random().toString(36).slice(2,6),ks=[...Array(f.hrs)].map((_,i)=>`slots/${f.type}_${f.st}_${f.date}_${f.start+i}`);
+ const fail=m=>{msg={err:1,t:m};render()};
+ if(!db||!uid)return fail('Sign in to claude.ai to book. Live booking needs a signed-in account.');
+ try{
+  for(const k of ks)if((await db.doc(k).get()).exists)return fail('That station was just taken. Pick another.');
+  for(const k of ks)await db.doc(k).set({bid:id});
+  for(const k of ks){const d=await db.doc(k).get();if(!d.exists||d.data().bid!==id){for(const j of ks){const x=await db.doc(j).get();if(x.exists&&x.data().bid===id)await db.doc(j).delete()}return fail('That station was just taken. Pick another.')}}
+  const b={id,uid,type:f.type,st:f.st,date:f.date,start:f.start,hrs:f.hrs,game:t.games[f.game][0],players:f.players,name:f.name.trim(),price:t.rate*f.hrs,status:'ok'};
+  await db.doc('bookings/'+id).set(b);await db.doc('contacts/'+id).set({name:b.name,phone:f.phone.trim()});
+  msg={t:`Booked: ${t.name} ${b.st}, ${b.date}, ${hh(b.start)}–${hh(b.start+b.hrs)}. Total ${money(b.price)}.`};f.start=null;f.st=null;fix();render()
+ }catch(e){fail('Could not save the booking. Check your connection and try again.')}
+}
+async function cancelBk(id){const b=S.bk.find(x=>x.id==id);if(!b||!db)return;try{for(let i=0;i<b.hrs;i++)await db.doc(`slots/${b.type}_${b.st}_${b.date}_${b.start+i}`).delete();await db.doc('bookings/'+id).update({status:'cancelled'})}catch(e){msg={err:1,t:'Could not cancel. Try again.'};render()}}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mine=new Set();
+let S=load(),view='book',admin=false,msg=null,pinErr=false;
+const okPh=p=>/^(\+?91)?[6-9]\d{9}$/.test(String(p).replace(/[\s-]/g,''));
+let f={type:'ps5',game:0,players:2,date:today(),start:null,hrs:1,st:null,name:'',phone:''};
+const T=()=>S.cfg.types[f.type];
+const money=n=>S.cfg.cur+Number(n).toLocaleString('en-IN',{maximumFractionDigits:2});
+const hh=h=>(h%12||12)+(h<12||h===24?' am':' pm');
+const overlap=(b,type,date,st,start,hrs)=>b.status==='ok'&&b.type===type&&b.date===date&&b.st===st&&start<b.start+b.hrs&&b.start<start+hrs;
+const free=(type,date,start,hrs)=>[...Array(S.cfg.types[type].n)].map((_,i)=>i+1).filter(s=>!S.bk.some(b=>overlap(b,type,date,s,start,hrs)));
+function fix(){const t=T();if(f.game>=t.games.length)f.game=0;f.players=Math.min(Math.max(1,f.players),t.games[f.game][1]);
+ if(f.start!==null){const ok=f.start+f.hrs<=S.cfg.close&&free(f.type,f.date,f.start,f.hrs).length;if(!ok){f.start=null;f.st=null}else if(!free(f.type,f.date,f.start,f.hrs).includes(f.st))f.st=free(f.type,f.date,f.start,f.hrs)[0]}}
+function rowHtml(b,adm){const t=S.cfg.types[b.type];return `<div class="bk ${b.status==='ok'?'':'x'}"><div><b>${t.name} ${b.st} · ${esc(b.game)}</b><small>${b.date}, ${hh(b.start)}–${hh(b.start+b.hrs)} · ${b.players} player${b.players>1?'s':''}${adm?' · '+esc(b.name)+(b.phone?' · <a href="tel:'+esc(b.phone.replace(/[\s-]/g,''))+'">'+esc(b.phone)+'</a>':''):''}</small></div><div style="text-align:right"><b>${money(b.price)}</b>${b.status==='ok'?`<br><button class="mini" data-a="cancel" data-v="${b.id}">Cancel</button>`:'<small>Cancelled</small>'}</div></div>`}
+function bookView(){
+ const t=T(),c=S.cfg,now=new Date(),isToday=f.date===today();
+ let h=`<h2>Station</h2><div class="types">`+Object.entries(c.types).map(([k,v])=>`<button class="type ${k===f.type?'on':''}" style="--acc:var(--${k})" data-a="type" data-v="${k}"><b>${v.name}</b><span>${v.n} stations<br>${money(v.rate)}/hour</span></button>`).join('')+`</div>`;
+ h+=`<h2>Game</h2><div class="row">`+t.games.map((g,i)=>`<button class="chip ${i===f.game?'on':''}" data-a="game" data-v="${i}">${esc(g[0])}</button>`).join('')+`</div>`;
+ const max=t.games[f.game][1];
+ h+=`<h2>Players (up to ${max})</h2><div class="step"><button data-a="pl" data-v="-1" aria-label="Fewer players">−</button><b>${f.players}</b><button data-a="pl" data-v="1" aria-label="More players">+</button></div>`;
+ h+=`<h2>Date</h2><input type="date" id="date" min="${today()}" value="${f.date}">`;
+ h+=`<h2>Length</h2><div class="row">`+[1,2,3].map(n=>`<button class="chip ${n===f.hrs?'on':''}" data-a="hrs" data-v="${n}">${n} hour${n>1?'s':''}</button>`).join('')+`</div>`;
+ h+=`<h2>Start time</h2><div class="row">`;
+ for(let s=c.open;s+f.hrs<=c.close;s++){const dis=(isToday&&s<=now.getHours())||!free(f.type,f.date,s,f.hrs).length;h+=`<button class="chip ${s===f.start?'on':''}" ${dis?'disabled':''} data-a="start" data-v="${s}">${hh(s)}</button>`}
+ h+=`</div>`;
+ if(f.start!==null){const fr=free(f.type,f.date,f.start,f.hrs);h+=`<h2>${t.name} station</h2><div class="sts">`+[...Array(t.n)].map((_,i)=>`<button class="st ${f.st===i+1?'on':''}" ${fr.includes(i+1)?'':'disabled'} data-a="st" data-v="${i+1}">${i+1}</button>`).join('')+`</div>`}
+ const ready=f.start!==null&&f.st&&f.name.trim()&&okPh(f.phone);
+ h+=`<div class="sum"><p class="mute">${f.hrs} hour${f.hrs>1?'s':''} × ${money(t.rate)}</p><div class="price">${money(t.rate*f.hrs)}</div>`+
+ (f.start!==null?`<p class="mute" style="margin-top:6px">${t.name} ${f.st||'–'} · ${f.date} · ${hh(f.start)}–${hh(f.start+f.hrs)}</p>`:`<p class="mute" style="margin-top:6px">Pick a start time to continue.</p>`)+
+ `<h2 style="margin-top:14px">Your name</h2><input type="text" id="name" value="${esc(f.name)}" placeholder="Name for the booking" autocomplete="name"><h2 style="margin-top:12px">Mobile number</h2><input type="tel" id="phone" inputmode="numeric" maxlength="14" value="${esc(f.phone)}" placeholder="10-digit number" autocomplete="tel"><p class="mute" style="margin-top:6px">We use this to contact you about your booking.</p><button class="go" data-a="confirm" ${ready?'':'disabled'}>Confirm and pay ${money(t.rate*f.hrs)}</button></div>`;
+ if(msg)h+=`<div class="msg ${msg.err?'err':''}" role="status">${msg.t}</div>`;
+ return h}
+function minView(){const l=S.bk.filter(b=>b.uid&&b.uid===uid).sort((a,b)=>a.date+a.start<b.date+b.start?-1:1);return `<h2>Bookings made on this device</h2>`+(l.length?l.map(b=>rowHtml(b,false)).join(''):`<p class="mute">No bookings yet. Pick a station on the Book tab.</p>`)}
+function adminView(){
+ const c=S.cfg;
+ if(!isAdm)return `<h2>Staff only</h2><p class="mute">Only the studio owner and editors can open this. Sign in with an editor account.</p>`;
+ const ok=S.bk.filter(b=>b.status==='ok'),rev=ok.reduce((a,b)=>a+b.price,0);
+ let h=`<h2>Overview</h2><div class="stat"><div><b>${ok.length}</b><span class="mute">active bookings</span></div><div><b>${money(rev)}</b><span class="mute">revenue</span></div></div>`;
+ h+=`<h2>Price per hour</h2>`+Object.entries(c.types).map(([k,v])=>`<div class="grid2"><label for="r-${k}">${v.name} (${v.n} stations)</label><input type="number" min="0" step="0.5" id="r-${k}" data-i="rate" data-k="${k}" value="${v.rate}"></div>`).join('');
+ h+=`<div class="grid2"><label for="cur">Currency symbol</label><input type="text" id="cur" data-i="cur" value="${esc(c.cur)}" maxlength="3"></div>`;
+ h+=`<div class="grid2"><label for="op">Opens (hour, 0–23)</label><input type="number" id="op" data-i="open" min="0" max="23" value="${c.open}"></div><div class="grid2"><label for="cl">Closes (hour, 1–24)</label><input type="number" id="cl" data-i="close" min="1" max="24" value="${c.close}"></div>`;
+ const all=[...S.bk].sort((a,b)=>a.date+String(a.start).padStart(2,'0')<b.date+String(b.start).padStart(2,'0')?-1:1);
+ h+=`<h2>All bookings</h2>`+(all.length?all.map(b=>rowHtml(Object.assign({},b,{phone:(contacts[b.id]||{}).phone}),true)).join(''):`<p class="mute">No bookings.</p>`);
+ h+=`<div class="row" style="margin-top:14px"></div>`;
+ return h}
+function render(){
+ document.getElementById('app').style.setProperty('--acc',`var(--${f.type})`);
+ let h=`<h1>Playroom</h1><p class="mute">Book a PS5, VR or car sim station by the hour.</p>${noDb?'<div class="msg err">Live availability is off. Sign in to claude.ai to book.</div>':''}`;
+ if(view!=='admin')h+=`<div class="nav"><button class="tab ${view==='book'?'on':''}" data-a="view" data-v="book">Book</button><button class="tab ${view==='mine'?'on':''}" data-a="view" data-v="mine">My bookings</button></div>`;
+ h+=view==='book'?bookView():view==='mine'?minView():`<button class="lnk" data-a="view" data-v="book">← Back to booking</button>`+adminView();
+ if(view!=='admin')h+=`<p style="margin-top:28px"><button class="lnk" data-a="view" data-v="admin">Staff login</button></p>`;
+ const y=window.scrollY;document.getElementById('app').innerHTML=h;window.scrollTo(0,y)}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,v=el.dataset.v;msg=null;
+ if(a==='view'&&v==='admin'&&!askPin())return;
+ if(a==='confirm'){book();return}
+ if(a==='type'){f.type=v;f.game=0;f.start=null;f.st=null}
+ else if(a==='game'){f.game=+v}
+ else if(a==='pl'){f.players+=+v}
+ else if(a==='hrs'){f.hrs=+v}
+ else if(a==='start'){f.start=+v;f.st=free(f.type,f.date,f.start,f.hrs)[0]}
+ else if(a==='st'){f.st=+v}
+ else if(a==='view'){view=v;pinErr=false}
+ else if(a==='confirm'){const t=T(),fr=free(f.type,f.date,f.start,f.hrs);
+  if(!fr.includes(f.st)){msg={err:1,t:'That station was just taken. Pick another.'}}
+  else{const b={id:Date.now(),type:f.type,st:f.st,date:f.date,start:f.start,hrs:f.hrs,game:t.games[f.game][0],players:f.players,name:f.name.trim(),phone:f.phone.trim(),price:t.rate*f.hrs,status:'ok'};S.bk.push(b);mine.add(b.id);save();
+   msg={t:`Booked: ${t.name} ${b.st}, ${b.date}, ${hh(b.start)}–${hh(b.start+b.hrs)}. Total ${money(b.price)}.`};f.start=null;f.st=null}}
+ else if(a==='cancel'){cancelBk(v);return}
+ else if(a==='login'){const p=document.getElementById('pin').value;if(p===S.cfg.pin){admin=true;pinErr=false}else pinErr=true}
+ else if(a==='logout'){admin=false}
+ else if(a==='reset'){S=seed();save();mine.clear()}
+ fix();render()});
+document.addEventListener('input',e=>{const id=e.target.id;if(id==='name'||id==='phone'){f[id]=e.target.value;const g=document.querySelector('.go');if(g&&view==='book')g.disabled=!(f.start!==null&&f.st&&f.name.trim()&&okPh(f.phone))}});
+document.addEventListener('change',e=>{const el=e.target;
+ if(el.id==='date'){f.date=el.value||today();f.start=null;f.st=null;msg=null;fix();render()}
+ else if(el.dataset.i){const i=el.dataset.i,c=S.cfg;
+  if(i==='rate')c.types[el.dataset.k].rate=Math.max(0,+el.value||0);
+  else if(i==='cur')c.cur=el.value||'₹';
+  else if(i==='open')c.open=Math.min(Math.max(0,+el.value||0),c.close-1);
+  else if(i==='close')c.close=Math.max(Math.min(24,+el.value||24),c.open+1);
+  save();fix();render()}});
+let db=null,uid=null,isAdm=false,noDb=false,contacts={};
+const rr=()=>{const a=document.activeElement;if(!(a&&(a.id==='name'||a.id==='phone')))render()};
+fix();render();
+(function(){
+ const LS='playroom-app-v1',PIN='1234';
+ let store={};try{store=JSON.parse(localStorage.getItem(LS)||'{}')}catch(e){}
+ const subs=[],persist=()=>{try{localStorage.setItem(LS,JSON.stringify(store))}catch(e){}},fire=()=>subs.forEach(f=>f());
+ const sd=p=>({id:p.split('/').pop(),exists:p in store,data:()=>store[p]});
+ db={doc:p=>({get:async()=>sd(p),set:async d=>{store[p]=d;persist();fire()},update:async d=>{store[p]=Object.assign({},store[p],d);persist();fire()},delete:async()=>{delete store[p];persist();fire()},onSnapshot:fn=>{const f=()=>fn(sd(p));subs.push(f);f();return()=>{}}}),
+  collection:c=>({onSnapshot:fn=>{const f=()=>fn({docs:Object.keys(store).filter(k=>k.startsWith(c+'/')&&k.split('/').length===2).map(sd)});subs.push(f);f();return()=>{}}})};
+ uid='local';window.askPin=()=>{if(isAdm)return true;const p=prompt('Staff PIN');if(p===PIN){isAdm=true;return true}return false};
+ const er=()=>{};
+ db.collection('bookings').onSnapshot(s=>{S.bk=s.docs.map(d=>d.data());fix();rr()},er);
+ db.doc('config/main').onSnapshot(s=>{if(s.exists){Object.assign(S.cfg,s.data());fix();rr()}},er);
+ db.collection('contacts').onSnapshot(s=>{contacts={};s.docs.forEach(d=>contacts[d.id]=d.data());rr()},er);
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
